@@ -64,6 +64,10 @@ In the folder where `bindall.php` is located, type:
 
 You can type `ls ~/.xbindkeysrc` to check that the file was created successfully.
 
+### Test bindings
+
+Type the shortcut `Win+c`, it should open gnome's calculator.
+
 
 ### Customize the bindings
 
@@ -83,22 +87,52 @@ Then, follow the examples from the template to devise your own binding.
 Here is one possible way to recall bindings.
 
    - use `Win+x` for an application whose name starts with letter `x`.
-   - use `Win+Shift+x` if the binding is already reserved by the system or another app.
-   - use `Win+Alt+x`  for a website whose name starts with letter `x`.
-   - use `Win+Alt+Shift+x`  if you have another one that starts with the same letter.
-   - use `Win+Ctrl+...` bindings for executing your favorite scripts.
-   - use `Win+Ctrl+Alt+...` bindings for executing system configuration operations.
+   - use `Win+Alt+...`  for a website whose name starts with letter `x`.
+   - use `Win+Ctrl+...` bindings for opening a frequently-used file.
+   - use `Win+Ctrl+Alt+...` bindings for executing system configuration operation.
+   - add `...+Shift+...` if the desired binding is already reserved.
+   - use non-letter keys, e.g. `Win+@', for typing your email.
 
 If a binding is already reserved by the system or the currently-running application,
 then xbindkeys would have smaller priority.
 
+
+## Supported keyboards
+
+Currently, bindings on non-letter characters are supported only for US keyboard 
+and French keyboard. The keyboard layout is automatically detected by the script.
+Other layouts can be easily added, see the comments near the end of the file.
+
+
+## Working
+
+Bindall generates a configuration file, named `~/.xbindkeysrc`, for `xbindkeys`.
+If `bindall.php` is located in `/home/charguer/conf/bindall/`, the file contains
+one binding for every possible shortcut. Its first few lines are:
+```
+"php /home/charguer/conf/bindall/bindall.php action Mod4+a"
+Mod4+a
+
+"php /home/charguer/conf/bindall/bindall.php action Mod4+b"
+Mod4+b
+```
+When they user type the shortcut `Mod4+a` (windows key and letter 'a'),
+`xbindkeys` runs the commands
+`php /home/charguer/conf/bindall/bindall.php action Mod4+a`.
+
+The `bindall.php` script receives the key binding `Mod4+a`, and perform
+the action registered by the user for this binding.
+
+
 ## Troubleshooting
 
    1. Execute `php bindall.php` to check that the files executes without error.
-   2. Check that `~/.xbindkeysrc` exists and contains call to bindall.php for every shortcut. 
-   3. After typing a shortcut, the file `_last.txt` generated next to `bindall.php` 
-      should contain the name of that shortcut.
-   4. After typing a shortcut, the file `_cmd.txt` generated next to `bindall.php` 
-      should contain the command executed for that shortcut.
-   5. Execute `chmod +x _cmd.txt && echo ./_cmd.txt | bash` in a terminal to re-run 
-      the requested command and see its potential errors.
+   2. Check that `~/.xbindkeysrc` exists and contains call to bindall.php for 
+      every shortcut. Take the first line from that file, without the quotes,
+      and try running it in a terminal.
+   3. After typing a shortcut, the file `_last.sh` generated next to `bindall.php` 
+      should contain the name of that shortcut. Check its contents, then type './_last.sh' 
+      to try running it.
+   4. After typing a shortcut, the file `_cmd.sh` generated next to `bindall.php` 
+      should contain the command executed for that shortcut. Check its contents, then
+      type './_cmd.sh' to try running it.
